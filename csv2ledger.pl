@@ -3,9 +3,12 @@
 # TODO
 #	- allow date format specification in account def
 #	- allow alternate config file to be specified on the command line
+#	- test config format with multiple accounts
 
 use strict;
 use warnings;
+
+use Data::Dump;
 
 # trims whitespace from all arguments
 
@@ -14,6 +17,29 @@ sub trim {
 		$_[$i] =~ s/^\s+//;
 		$_[$i] =~ s/\s+$//;
 	}
+}
+
+sub formatDate {
+	my $date = shift;
+	my $format = shift;
+	my $month = "";
+	my $day = "";
+	my $year = "";
+
+	for (my $i = 0; $i < length $date; $i++) {
+		my $ch = substr $format, $i, 1;
+		my $newch = substr $date, $i, 1;
+
+		if ($ch eq "m") {
+			$month .= $newch;
+		} elsif ($ch eq "d") {
+			$day .= $newch;
+		} elsif ($ch eq "y") {
+			$year .= $newch;
+		}
+	}
+
+	return "$year/$month/$day";
 }
 
 # processes the given config text, and parses it into a config data
@@ -54,7 +80,14 @@ sub processConfig {
 				my %temp;
 
 				for (my $i = 0; $i < scalar @tags; $i++) {
-					$temp{$tags[$i]} = $i;
+					if ($tags[$i] =~ /^date/) {
+						my ($dummy, $dateFormat) = split /-/, $tags[$i];
+
+						$temp{date} = $i;
+						$temp{dateFormat} = $dateFormat;
+					} else {
+						$temp{$tags[$i]} = $i;
+					}
 				}
 
 				$config{account} = {%temp};
@@ -97,7 +130,10 @@ sub processTransactions {
 		my @bits = split /,/;
 		my $transaction = "";
 
-		my $date = $bits[$config{account}{date}];
+		my $rawDate = $bits[$config{account}{date}];
+		my $dateFormat = $config{account}{dateFormat};
+
+		my $date = formatDate $rawDate, $dateFormat;
 		my $debit = $bits[$config{account}{debit}];
 		my $credit = $bits[$config{account}{credit}];
 		my $label = $bits[$config{account}{label}];

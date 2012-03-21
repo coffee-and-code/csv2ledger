@@ -1,6 +1,6 @@
 [accounts]
 	Assets:Bank:Chequing
-		date,label,credit,debit,balance
+		date-mm/dd/yyyy,label,debit,credit,balance
 [/accounts]
 
 [rules]
