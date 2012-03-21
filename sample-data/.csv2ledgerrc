@@ -1,0 +1,9 @@
+[accounts]
+	Assets:Bank:Chequing
+		date,label,credit,debit,balance
+[/accounts]
+
+[rules]
+	Expenses:Home:Groceries
+		no frill,sobey
+[/rules]
