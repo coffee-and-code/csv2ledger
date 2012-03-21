@@ -138,6 +138,8 @@ sub processTransactions {
 		my $credit = $bits[$config{account}{credit}];
 		my $label = $bits[$config{account}{label}];
 
+		$label =~ s/[\t\ ]+/\ /g;
+
 		$credit = 0 if ($credit eq "");
 		$debit = 0 if ($debit eq "");
 
@@ -161,7 +163,7 @@ sub processTransactions {
 		push @transactions, $transaction;
 	}
 
-	return join "\n", @transactions;
+	return join "", @transactions;
 }
 
 # main starts here
