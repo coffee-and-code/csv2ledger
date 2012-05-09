@@ -1,9 +1,62 @@
-[accounts]
-	Assets:Bank:Chequing
-		date-mm/dd/yyyy,label,debit,credit,balance
-[/accounts]
+accounts:
+        - name: Assets:Bank:Chequing
+          dateFormat: mm/dd/yyyy
+          columnOrder:
+                - date
+                - label
+                - debit
+                - credit
+                - balance
+          rules:
+                - account: Liabilities:Credit Cards:Desjardins Visa
+                  keyWords:
+                        - visa desjard
+                - account: Assets:Bank:Savings:Joint
+                  keyWords:
+                        - ssv
+                - account: Liabilities:Credit Counselling
+                  keyWords:
+                        - crdt cunsl
+                - account: Expenses:Insurance:Car
+                  keyWords:
+                        - co-operators
+                - account: Expenses:Insurance:Life:Caden
+                  keyWords:
+                        - sun life
+                        - alliance
+                - account: Expenses:Personal:Health:Gym
+                  keyWords:
+                        - goodlife
+                - account: Expenses:Home:Utilities:Hydro
+                  keyWords:
+                        - tor hyd elec
 
-[rules]
-	Expenses:Home:Groceries
-		no frill,sobey
-[/rules]
+        - name: Assets:Bank
+          dateFormat: mm/dd/yyyy
+          columnOrder:
+                - date
+                - label
+                - debit
+                - credit
+                - balance
+
+####
+#
+# Global rules
+#
+##
+
+rules:
+        - account: Expenses:Home:Groceries
+          keyWords:
+                - no frills
+                - sobey
+                - valumart
+                - longo
+        - account: Expenses:Entertainment:Alcohol
+          keyWords:
+                - beer
+                - lcbo
+        - account: Expenses:Transportation:Transit
+          keyWords:
+                - long branch go
